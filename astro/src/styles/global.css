@@ -6,3 +6,134 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Fira Code", ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
 }
+
+@layer base {
+  /* Headings - Clear hierarchy for plan sections */
+  h1 {
+    @apply text-4xl font-bold mb-4 mt-8 first:mt-0;
+  }
+  h2 {
+    @apply text-3xl font-semibold mb-3 mt-8 text-slate-800 border-b border-slate-200 pb-2;
+  }
+  h3 {
+    @apply text-2xl font-semibold mb-3 mt-6 text-slate-700;
+  }
+  h4 {
+    @apply text-xl font-medium mb-2 mt-4 text-slate-700;
+  }
+
+  /* Paragraphs - Good spacing for readability */
+  p {
+    @apply mb-4 leading-relaxed text-slate-900;
+  }
+
+  /* Lists - Clear visual hierarchy */
+  ul {
+    @apply list-disc ml-0 pl-6 my-4 space-y-1;
+  }
+
+  ol {
+    @apply list-decimal ml-0 pl-6 my-4 space-y-1;
+  }
+
+  li {
+    @apply mb-1 pl-1 leading-relaxed;
+  }
+
+  /* Nested lists */
+  li > ul,
+  li > ol {
+    @apply mt-2 mb-2;
+  }
+
+  /* Links - Visible but not distracting */
+  a {
+    @apply text-blue-600 hover:text-blue-800 hover:underline underline-offset-2;
+  }
+
+  /* Code blocks - Our configured mono (code) font with good contrast */
+  code {
+    @apply font-mono text-sm bg-slate-100 px-1.5 py-0.5 rounded;
+  }
+  pre {
+    @apply font-mono text-sm bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto my-4;
+  }
+  pre code {
+    @apply bg-transparent p-0;
+  }
+
+  /* Blockquotes - For important notes/warnings */
+  blockquote {
+    @apply border-l-4 border-blue-500 pl-4 py-2 my-4 italic text-slate-700 bg-slate-50;
+  }
+
+  /* Horizontal rules - Section dividers */
+  hr {
+    @apply my-8 border-slate-300;
+  }
+
+  /* Tables - If plans include comparison tables */
+  table {
+    @apply w-full my-4 border-collapse;
+  }
+  th {
+    @apply bg-slate-100 font-semibold text-left p-3 border border-slate-300;
+  }
+  td {
+    @apply p-3 border border-slate-300;
+  }
+
+  /* Strong/Bold - Emphasis */
+  strong {
+    @apply font-semibold text-slate-900;
+  }
+
+  /* Emphasis/Italic */
+  em {
+    @apply italic;
+  }
+}
+
+/*
+
+## Styling by Claude.ai
+
+Claude Code Version 2.0.57 with model Sonnet 4.5.
+
+The styles are specifically tailored for viewing AI-generated technical documentation from Claude Code.
+
+Key features of the suggested styles:
+1. Clear heading hierarchy - H1 (4xl) → H2 (3xl with border) → H3 (2xl) → H4 (xl)
+2. Comfortable list spacing - Disc/decimal bullets with proper indentation and nested list support
+3. Code styling - Inline code with light background, code blocks with dark theme, both using Fira Code
+4. Good readability - leading-relaxed line height, generous vertical spacing
+5. Professional look - Blue links, styled blockquotes, table support, horizontal rules
+
+## Design Rationale for Claude Code Plans
+
+Headers:
+- Large, clear hierarchy (H1 4xl → H2 3xl → H3 2xl)
+- H2 with bottom border to clearly separate major sections
+- Good spacing (mt-8 for major breaks, mt-6/mt-4 for subsections)
+
+Lists:
+- space-y-1 for comfortable reading without excessive gaps
+- Nested list support with proper margins
+- Disc bullets for ul, decimal for ol (standard, scannable)
+
+Code:
+- Inline code with light gray background for visibility
+- pre blocks with dark theme to match typical IDE expectations
+- Fira Code font automatically applied via font-mono
+
+Links:
+- Blue color (matches standard web convention)
+- Underline on hover only (cleaner default view)
+- underline-offset-2 for better readability
+
+Spacing:
+- leading-relaxed (line-height 1.625) for paragraphs and list items
+- Generous vertical spacing (my-4, my-8) for breathing room
+- first:mt-0 on H1 to avoid top gap on first heading
+
+*/
