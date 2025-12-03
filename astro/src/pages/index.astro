@@ -1,18 +1,70 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { stat } from 'node:fs/promises';
+import { join } from 'node:path';
+
 const plans = await getCollection('plans');
+
+// Get file modified times
+const plansWithTime = await Promise.all(
+  plans.map(async (plan) => {
+    const filePath = join(process.env.MARKDOWN_PLANS_PATH || '', `${plan.id}.md`);
+    try {
+      const stats = await stat(filePath);
+      return {
+        ...plan,
+        modifiedTime: stats.mtime
+      };
+    } catch (err) {
+      console.error(`Failed to get stats for ${plan.id}:`, err);
+      return {
+        ...plan,
+        modifiedTime: new Date(0) // Fallback to epoch
+      };
+    }
+  })
+);
+
+// Sort by modified time (newest first)
+const sortedPlans = plansWithTime.sort((a, b) =>
+  b.modifiedTime.getTime() - a.modifiedTime.getTime()
+);
+
+// Format date/time helper
+function formatDateTime(date: Date): string {
+  return new Intl.DateTimeFormat('en-GB', {
+    dateStyle: 'medium',
+    timeStyle: 'short'
+  }).format(date);
+}
 ---
 
 <BaseLayout title="Project Plans" bodyClass="bg-gray-50">
   <h1 class="text-3xl font-bold mb-8">Project Plans</h1>
-  <ul class="bg-white shadow rounded-lg divide-y">
-    {plans.map(plan => (
-      <li>
-        <a href={`/${plan.id}`} class="block p-6 hover:bg-blue-50 transition">
-          <span class="text-lg font-medium text-blue-600">{plan.id}</span>
-        </a>
-      </li>
-    ))}
-  </ul>
+
+  <div class="bg-white shadow rounded-lg overflow-hidden">
+    <table class="w-full">
+      <thead class="bg-slate-50 border-b border-slate-200">
+        <tr>
+          <th class="text-left p-4 font-semibold text-slate-700">Plan</th>
+          <th class="text-left p-4 font-semibold text-slate-700">Last Modified</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-200">
+        {sortedPlans.map(plan => (
+          <tr class="hover:bg-blue-50 transition">
+            <td class="p-4">
+              <a href={`/${plan.id}`} class="text-lg font-medium text-blue-600 hover:underline">
+                {plan.id}
+              </a>
+            </td>
+            <td class="p-4 text-slate-600">
+              {formatDateTime(plan.modifiedTime)}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 </BaseLayout>
