@@ -36,13 +36,30 @@ const sortedPlans = plansWithMetadata.sort((a, b) =>
   b.modifiedTime.getTime() - a.modifiedTime.getTime()
 );
 
-// Format date/time helper
-function formatDateTime(date: Date): string {
-  return new Intl.DateTimeFormat('en-GB', {
-    dateStyle: 'medium',
-    timeStyle: 'short'
-  }).format(date);
-}
+// Format date/time helper - returns object with three parts
+  function formatDateTime(date: Date): { time: string; day: string; date: string } {
+    // Line 1: 24-hour time HH:MM:SS (zero-padded)
+    const time = new Intl.DateTimeFormat('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    }).format(date);
+
+    // Line 2: Three-letter day of week
+    const day = new Intl.DateTimeFormat('en-GB', {
+      weekday: 'long'
+    }).format(date);
+
+    // Line 3: Date in medium format (3 Dec 2025)
+    const dateStr = new Intl.DateTimeFormat('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    }).format(date);
+
+    return { time, day, date: dateStr };
+  }
 ---
 
 <BaseLayout title="Project Plans" bodyClass="bg-gray-50">
@@ -75,7 +92,16 @@ function formatDateTime(date: Date): string {
               )}
             </td>
             <td class="px-2 py-1 text-slate-600 align-top">
-              {formatDateTime(plan.modifiedTime)}
+              {(() => {
+                const formatted = formatDateTime(plan.modifiedTime);
+                return (
+                  <div class="font-mono leading-tight whitespace-nowrap">
+                    <div>{formatted.time}</div>
+                    <div>{formatted.day}</div>
+                    <div>{formatted.date}</div>
+                  </div>
+                );
+              })()}
             </td>
           </tr>
         ))}
