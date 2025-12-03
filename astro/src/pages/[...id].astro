@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from 'astro:content';
+
+// Generate a route for every markdown file found
+export async function getStaticPaths() {
+  const plans = await getCollection('plans');
+  return plans.map(plan => ({
+    params: { id: plan.id },
+    props: { plan },
+  }));
+}
+
+// Render the content
+const { plan } = Astro.props;
+const { Content } = await render(plan);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{plan.id}</title>
+    <meta name="viewport" content="width=device-width" />
+  </head>
+  <body class="bg-white min-h-screen p-12 text-slate-900">
+    <div class="max-w-3xl mx-auto">
+      <a href="/" class="text-blue-600 hover:underline mb-8 block">&larr; Back to Index</a>
+      
+      <article class="prose prose-slate lg:prose-xl max-w-none prose-headings:font-semibold prose-a:text-blue-600">
+        <Content />
+      </article>
+    </div>
+  </body>
+</html>
