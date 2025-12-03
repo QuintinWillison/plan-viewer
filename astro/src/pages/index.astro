@@ -52,14 +52,14 @@ function formatDateTime(date: Date): string {
     <table class="w-full">
       <thead class="bg-slate-50 border-b border-slate-200">
         <tr>
-          <th class="text-left p-4 font-semibold text-slate-700">Plan</th>
-          <th class="text-left p-4 font-semibold text-slate-700">Last Modified</th>
+          <th class="text-left px-2 py-1 font-semibold text-slate-700">Plan</th>
+          <th class="text-left px-2 py-1 font-semibold text-slate-700">Last Modified</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-slate-200">
         {sortedPlans.map(plan => (
           <tr class="hover:bg-blue-50 transition">
-            <td class="p-4">
+            <td class="px-2 py-1">
               <a href={`/${plan.id}`} class="text-lg font-medium text-blue-600 hover:underline block mb-2">
                 {plan.id}
               </a>
@@ -74,7 +74,7 @@ function formatDateTime(date: Date): string {
                 </ul>
               )}
             </td>
-            <td class="p-4 text-slate-600 align-top">
+            <td class="px-2 py-1 text-slate-600 align-top">
               {formatDateTime(plan.modifiedTime)}
             </td>
           </tr>
