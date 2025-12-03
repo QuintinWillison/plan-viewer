@@ -1,33 +1,38 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { stat } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const plans = await getCollection('plans');
 
-// Get file modified times
-const plansWithTime = await Promise.all(
+// Get file modified times AND headings
+const plansWithMetadata = await Promise.all(
   plans.map(async (plan) => {
+    // Get file stats
     const filePath = join(process.env.MARKDOWN_PLANS_PATH || '', `${plan.id}.md`);
+    let modifiedTime = new Date(0);
     try {
       const stats = await stat(filePath);
-      return {
-        ...plan,
-        modifiedTime: stats.mtime
-      };
+      modifiedTime = stats.mtime;
     } catch (err) {
       console.error(`Failed to get stats for ${plan.id}:`, err);
-      return {
-        ...plan,
-        modifiedTime: new Date(0) // Fallback to epoch
-      };
     }
+
+    // Get headings
+    const { headings } = await render(plan);
+    const h1Headings = headings.filter(h => h.depth === 1);
+
+    return {
+      ...plan,
+      modifiedTime,
+      h1Headings
+    };
   })
 );
 
 // Sort by modified time (newest first)
-const sortedPlans = plansWithTime.sort((a, b) =>
+const sortedPlans = plansWithMetadata.sort((a, b) =>
   b.modifiedTime.getTime() - a.modifiedTime.getTime()
 );
 
@@ -55,11 +60,21 @@ function formatDateTime(date: Date): string {
         {sortedPlans.map(plan => (
           <tr class="hover:bg-blue-50 transition">
             <td class="p-4">
-              <a href={`/${plan.id}`} class="text-lg font-medium text-blue-600 hover:underline">
+              <a href={`/${plan.id}`} class="text-lg font-medium text-blue-600 hover:underline block mb-2">
                 {plan.id}
               </a>
+              {plan.h1Headings.length > 0 && (
+                <ul class="text-sm text-slate-600 space-y-1">
+                  {plan.h1Headings.map(heading => (
+                    <li class="flex items-start">
+                      <span class="mr-2">•</span>
+                      <span>{heading.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </td>
-            <td class="p-4 text-slate-600">
+            <td class="p-4 text-slate-600 align-top">
               {formatDateTime(plan.modifiedTime)}
             </td>
           </tr>
