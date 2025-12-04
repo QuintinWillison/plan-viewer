@@ -21,7 +21,7 @@ This project is a small, lightweight viewer that converts Claude Code's markdown
 - **Index page** - Shows all plans in a sortable table with modification times
 - **File system watching** - Automatically detects when Claude updates a plan, enabling auto-refresh when plan files change
 - **Multiple device support** - When bound to all interfaces, viewable on other devices (e.g. iPad)
-- **Clean typography** - Uses Inter and Fira Code fonts for professional presentation
+- **Clean typography** - Uses [Inter](https://fonts.google.com/specimen/Inter) and [Fira Code](https://fonts.google.com/specimen/Fira+Code) for clarity and legibility
 
 The viewer reads plan files directly from Claude's storage directory (typically `~/.claude/plans`) without copying or modifying them.
 
