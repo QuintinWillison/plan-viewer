@@ -25,6 +25,8 @@ This project is a small, lightweight viewer that converts Claude Code's markdown
 
 The viewer reads plan files directly from Claude's storage directory (typically `~/.claude/plans`) without copying or modifying them.
 
+![Plan Viewer Index page screenshot](docs/index-page-screenshot.png)
+
 ## How?
 
 This project is built atop [Astro](https://astro.build/) - a modern, competent, Node.js-based static website builder.
