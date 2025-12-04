@@ -48,6 +48,11 @@ The result is a minimal but powerful tool that stays out of the way while making
 
 ## Getting Started
 
+> [!NOTE]
+> It's early days for this project and it's still somewhat incubating.
+> For that reason it's only been tested on a macOS system with Claude Code sandboxed within a [Lima](https://github.com/lima-vm/lima)-provided Ubuntu VM.
+> Mileage will vary.
+
 1. Clone this repository
 2. Configure the `MARKDOWN_PLANS_PATH` environment variable (e.g. `~/.claude/plans`)
 3. `cd astro && npm i && npm run dev`
