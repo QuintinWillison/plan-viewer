@@ -80,16 +80,20 @@ const sortedPlans = plansWithMetadata.sort((a, b) =>
               <a href={`/${plan.id}`} class="text-lg font-medium text-blue-600 hover:underline block mb-2">
                 {plan.id}
               </a>
-              {plan.h1Headings.length > 0 && (
-                <ul class="text-sm text-slate-600 space-y-1">
-                  {plan.h1Headings.map(heading => (
-                    <li class="flex items-start">
-                      <span class="mr-2">•</span>
-                      <span>{heading.text}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              {plan.h1Headings.length === 1
+                ? (<div class="text-sm text-slate-600 mt-1">
+                    {plan.h1Headings[0].text}
+                  </div>)
+                : plan.h1Headings.length > 1
+                  ? (<ul class="text-sm text-slate-600 space-y-1">
+                    {plan.h1Headings.map(heading => (
+                      <li class="flex items-start">
+                        <span class="mr-2">•</span>
+                        <span>{heading.text}</span>
+                      </li>
+                    ))}
+                  </ul>)
+                  : null}
             </td>
             <td class="px-2 py-1 text-slate-600 align-top">
               {(() => {
