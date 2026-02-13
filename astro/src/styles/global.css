@@ -61,6 +61,9 @@
   pre code {
     @apply bg-transparent p-0;
   }
+  pre.mermaid {
+    @apply bg-transparent p-4;
+  }
 
   /* Blockquotes - For important notes/warnings */
   blockquote {

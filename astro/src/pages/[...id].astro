@@ -23,3 +23,47 @@ const { Content } = await render(plan);
     <Content />
   </article>
 </BaseLayout>
+
+<script>
+  import mermaid from 'mermaid';
+
+  // Initialize mermaid with configuration
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'default'
+  });
+
+  // Function to transform and render mermaid diagrams
+  async function renderMermaidDiagrams() {
+    // Find all code blocks with data-language="mermaid"
+    const mermaidBlocks = document.querySelectorAll('pre.astro-code[data-language="mermaid"]');
+
+    if (mermaidBlocks.length === 0) return;
+
+    mermaidBlocks.forEach((block, index) => {
+      // Extract the diagram code from the <code> element
+      const codeElement = block.querySelector('code');
+      if (!codeElement) return;
+
+      // Get the text content (diagram definition)
+      const diagramCode = codeElement.textContent || '';
+
+      // Create a new pre.mermaid element
+      const mermaidPre = document.createElement('pre');
+      mermaidPre.className = 'mermaid';
+      mermaidPre.textContent = diagramCode;
+
+      // Replace the syntax-highlighted block with the mermaid block
+      block.replaceWith(mermaidPre);
+    });
+
+    // Run mermaid to render all diagrams
+    await mermaid.run();
+  }
+
+  // Render on initial page load
+  renderMermaidDiagrams();
+
+  // Also handle Astro view transitions (if ever added)
+  document.addEventListener('astro:page-load', renderMermaidDiagrams);
+</script>
