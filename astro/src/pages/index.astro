@@ -2,7 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 import { stat } from 'node:fs/promises';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
+
+if (!process.env.MARKDOWN_PLANS_PATH) {
+  throw new Error('MARKDOWN_PLANS_PATH has not been set in environment.');
+}
+const plansPath = process.env.MARKDOWN_PLANS_PATH;
 
 const plans = await getCollection('plans');
 
@@ -10,13 +15,16 @@ const plans = await getCollection('plans');
 const plansWithMetadata = await Promise.all(
   plans.map(async (plan) => {
     // Get file stats
-    const filePath = join(process.env.MARKDOWN_PLANS_PATH || '', `${plan.id}.md`);
+    if (!plan.filePath) {
+      throw new Error(`plan.filePath is undefined for plan.id: ${plan.id}`);
+    }
+    const filePath = join(plansPath, basename(plan.filePath));
     let modifiedTime = new Date(0);
     try {
       const stats = await stat(filePath);
       modifiedTime = stats.mtime;
     } catch (err) {
-      console.error(`Failed to get stats for ${plan.id}:`, err);
+      console.error(`Failed to get stats for '${plan.id}' with path '${plan.filePath}':`, err);
     }
 
     // Get headings
