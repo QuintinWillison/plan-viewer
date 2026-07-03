@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Fira Code", ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+  --font-mono: "Fira Mono", ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
 }
 
 @layer base {
@@ -108,7 +108,7 @@ The styles are specifically tailored for viewing AI-generated technical document
 Key features of the suggested styles:
 1. Clear heading hierarchy - H1 (4xl) → H2 (3xl with border) → H3 (2xl) → H4 (xl)
 2. Comfortable list spacing - Disc/decimal bullets with proper indentation and nested list support
-3. Code styling - Inline code with light background, code blocks with dark theme, both using Fira Code
+3. Code styling - Inline code with light background, code blocks with dark theme, both using Fira Mono
 4. Good readability - leading-relaxed line height, generous vertical spacing
 5. Professional look - Blue links, styled blockquotes, table support, horizontal rules
 
@@ -127,7 +127,7 @@ Lists:
 Code:
 - Inline code with light gray background for visibility
 - pre blocks with dark theme to match typical IDE expectations
-- Fira Code font automatically applied via font-mono
+- Fira Mono font automatically applied via font-mono
 
 Links:
 - Blue color (matches standard web convention)
