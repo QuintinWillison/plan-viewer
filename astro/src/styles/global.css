@@ -64,6 +64,37 @@
   pre.mermaid {
     @apply bg-transparent p-4;
   }
+ 
+  /* Fenced code blocks (excluding Mermaid): soft-wrap long lines so a
+     horizontal scrollbar never appears, and render a non-selectable
+     line-number gutter. Mermaid fences become rendered diagrams client-side,
+     so they must keep Shiki's untouched output. */
+  pre.astro-code:not([data-language="mermaid"]) {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  /* Each line stays inline (Shiki's default) so the real newlines between lines
+     survive, which keeps selection and copy - blank lines included - behaving
+     like normal text. The gutter is code's left padding, and each line's number
+     is an inline-block ::before pulled into that padding with a negative margin
+     whose total advance is zero, so the code still starts at the gutter edge. */
+  pre.astro-code:not([data-language="mermaid"]) code {
+    display: block;
+    padding-left: 3rem;
+    counter-reset: line;
+  }
+  pre.astro-code:not([data-language="mermaid"]) .line {
+    counter-increment: line;
+  }
+  pre.astro-code:not([data-language="mermaid"]) .line::before {
+    content: counter(line);
+    display: inline-block;
+    width: 2.25rem;
+    margin-left: -3rem;
+    margin-right: 0.75rem;
+    text-align: right;
+    @apply text-slate-500 select-none;
+  }
 
   /* Blockquotes - For important notes/warnings */
   blockquote {
