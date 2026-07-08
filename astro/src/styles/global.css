@@ -128,6 +128,22 @@
   }
 }
 
+/* When printing, render fenced code blocks with Shiki's light theme on a white
+   background so they are legible on paper. On screen they keep the dark theme
+   (see defaultColor: 'dark' in astro.config.mjs). These rules sit outside
+   @layer base and use !important so they win over Shiki's per-token inline
+   colours. Mermaid fences are excluded: they become client-rendered SVG
+   diagrams that already print fine on the page's white background. */
+@media print {
+  pre.astro-code:not([data-language="mermaid"]) {
+    background-color: var(--shiki-light-bg) !important;
+    color: var(--shiki-light) !important;
+  }
+  pre.astro-code:not([data-language="mermaid"]) span {
+    color: var(--shiki-light) !important;
+  }
+}
+
 /*
 
 ## Styling by Claude.ai
